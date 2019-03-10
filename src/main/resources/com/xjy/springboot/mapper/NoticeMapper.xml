@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xjy.springboot.mapper.NoticeMapper">
+    <resultMap id="BaseResultMap" type="com.xjy.springboot.vo.NoticeInfoVO">
+        <id column="notice_id" property="noticeId"/>
+        <result column="open_id" property="openId"/>
+        <result column="content" property="content"/>
+        <result column="notice_time" property="noticeTime"/>
+        <result column="nickname" property="nickname"/>
+    </resultMap>
+    <insert id="insertNotice" parameterType="com.xjy.springboot.vo.NoticeVO">
+        insert into notice (notice_id,travel_id,open_id,content,notice_time) values
+        (#{noticeId},#{travelId},#{openId},#{content},#{noticeTime})
+    </insert>
+    <select id="selectNoticeByTravelId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select n.notice_id,n.open_id,n.content,n.notice_time,u.nickname from notice n,user u
+        where travel_id = #{travelId} and n.open_id = u.open_id order by n.notice_time asc
+    </select>
+    <delete id="deleteNoticeByNoticeId" parameterType="java.lang.String">
+        delete from notice where notice_id = #{noticeId}
+    </delete>
+</mapper>

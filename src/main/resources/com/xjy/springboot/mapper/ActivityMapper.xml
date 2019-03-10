@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xjy.springboot.mapper.ActivityMapper">
+    <resultMap id="BaseResultMap" type="com.xjy.springboot.vo.ActivityVO">
+        <id column="travel_id"  jdbcType="VARCHAR" property="travelId"/>
+        <result column="open_id" property="openId"/>
+        <result column="place" property="place"/>
+        <result column="start_time"  property="startTime"/>
+        <result column="end_time"  property="endTime"/>
+        <result column="title" property="title"/>
+        <result column="description" property="description"/>
+        <result column="flag" property="flag"/>
+        <result column="type" property="type"/>
+        <result column="cost" property="cost"/>
+        <result column="max_number" property="maxNumber"/>
+    </resultMap>
+    <insert id="insertActivity" parameterType="com.xjy.springboot.vo.ActivityVO">
+        insert into activity
+        (travel_id,open_id,place,start_time,end_time,title,description,flag,type,cost,max_number)
+        values (#{travelId},#{openId},#{place},#{startTime},#{endTime},#{title},#{description},1,#{type},#{cost},
+        #{maxNumber})
+    </insert>
+    <update id="updateActivity" parameterType="com.xjy.springboot.vo.ActivityVO">
+        update activity
+        <set>
+            <if test="place != null">
+                place = #{place},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime},
+            </if>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="cost">
+                cost = #{cost},
+            </if>
+            <if test="maxNumber != null">
+                max_number = #{maxNumber},
+            </if>
+        </set>
+        where travel_id = #{travelId}
+    </update>
+    <delete id="deleteActivity" parameterType="java.lang.String">
+        update activity
+        set flag = 0
+        where travel_id = #{travleId}
+    </delete>
+    <select id="selectAllActivity" resultMap="BaseResultMap">
+        select *
+        from activity
+        where flag = 1
+    </select>
+    <select id="selectActivityByTitle" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select *
+        from activity
+        where title like '%${title}%' and flag = 1
+    </select>
+    <select id="selectActivityByTravelId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select *
+        from activity
+        where travel_id = #{travelId} and flag = 1
+    </select>
+    <select id="selectCreatedOverdueActivityByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select *
+        from activity
+        where open_id = #{openId} and flag = -1
+    </select>
+    <select id="selectCreatedActivityByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select *
+        from activity
+        where open_id = #{openId} and flag = 1
+    </select>
+
+    <select id="selectJoinedActivityByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select activity.* from activity, attend_list where attend_list.open_id = #{openId} and
+        attend_list.travel_id = activity.travel_id
+    </select>
+
+</mapper>

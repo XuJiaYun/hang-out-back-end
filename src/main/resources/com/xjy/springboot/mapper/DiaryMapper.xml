@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xjy.springboot.mapper.DiaryMapper">
+    <resultMap id="BaseResultMap" type="com.xjy.springboot.vo.DiaryVO">
+        <id column="diary_id" property="diaryId"/>
+        <result column="open_id" property="openId"/>
+        <result column="content" property="content"/>
+        <result column="pictureName" property="pictureName"/>
+        <result column="title" property="title"/>
+        <result column="view" property="view"/>
+        <result column="like" property="like"/>
+        <result column="time" property="time"/>
+    </resultMap>
+    <insert id="insertDiary" parameterType="com.xjy.springboot.vo.DiaryVO">
+        insert into diary (diary_id, open_id, content, pictureName, title, `time`, `view`, `like`) values (#{diaryId}, #{openId}, #{content},
+        #{pictureName}, #{title}, #{time}, 0, 0)
+    </insert>
+
+    <delete id="deleteDiary" parameterType="java.lang.String">
+        delete from diary where diary_id = #{diaryId}
+    </delete>
+
+    <select id="selectDiaryByDiaryId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from diary where diary_id = #{diaryId}
+    </select>
+
+    <select id="selectDiaryByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from diary where open_id = #{openId}
+    </select>
+
+    <update id="viewDiary" parameterType="java.lang.String">
+        update diary set view = view + 1 where diary_id = #{diaryId}
+    </update>
+
+    <update id="likeDiary" parameterType="java.lang.String">
+        update diary set like = like + 1 where diary_id = #{diaryId}
+    </update>
+</mapper>

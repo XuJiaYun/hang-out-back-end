@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xjy.springboot.mapper.AttendListMapper">
+    <insert id="insertAttendList" parameterType="com.xjy.springboot.vo.AttendListVO">
+        insert into attend_list (travel_id,open_id,comment)
+        values (#{travelId},#{openId},#{comment})
+    </insert>
+    <delete id="deleteAttendList" parameterType="com.xjy.springboot.vo.AttendListVO">
+        delete from attend_list where travel_id = #{travelId} and open_id = #{openId}
+    </delete>
+    <delete id="deleteAttendListByTravelId" parameterType="java.lang.String">
+        delete from attend_list where travel_id = #{travelId}
+    </delete>
+    <select id="isAttendListExist" parameterType="com.xjy.springboot.vo.AttendListVO" resultType="java.lang.Integer">
+        select count(*) from attend_list
+        where travel_id = #{travelId} and open_id = #{openId}
+    </select>
+</mapper>
